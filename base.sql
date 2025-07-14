@@ -18,7 +18,7 @@ create table categorie_objet(
 );
 
 create table objet(
-    id_objet INT PRIMARY KEY,
+    id_objet INT AUTO_INCREMENT KEY,
     nom_objet VARCHAR(100),
     id_categorie INT,
     id_membre INT,
@@ -111,3 +111,4 @@ INSERT INTO emprunts (id_objet, id_membre, date_emprunt, date_retour) VALUES
 (35, 2, '2024-01-22', '2024-02-01'),
 (40, 3, '2024-01-25', '2024-02-04'),
 (4, 1, '2024-01-28', '2024-02-07');
+
