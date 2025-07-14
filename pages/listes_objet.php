@@ -5,9 +5,11 @@ $bdd=connect_base();
 $categories_result = mysqli_query($bdd, "SELECT id_categorie, nom_categorie FROM categorie_objet");
 $selected_category = isset($_GET['category']) ? intval($_GET['category']) : 0;
 
-$querry= "SELECT o.nom_objet, c.nom_categorie, m.nom as proprietaire, e.date_retour 
-FROM objet o JOIN categorie_objet c ON o.id_categorie = c.id_categorie 
-JOIN membre m ON o.id_membre = m.id_membre LEFT JOIN emprunts e ON o.id_objet = e.id_objet";
+$querry= "SELECT o.id_objet, o.nom_objet, c.nom_categorie, m.nom as proprietaire, e.date_retour 
+FROM objet o 
+JOIN categorie_objet c ON o.id_categorie = c.id_categorie 
+JOIN membre m ON o.id_membre = m.id_membre 
+LEFT JOIN emprunts e ON o.id_objet = e.id_objet";
 
 if ($selected_category > 0) {
     $querry .= " WHERE o.id_categorie = $selected_category";
@@ -43,6 +45,8 @@ $resultat = mysqli_query($bdd,$querry);
     <th>nom_categorie</th>
     <th>proprietaire</th>
     <th>date_retour</th>
+    <th>Jours a emprunter</th>
+    <th>Emprunter</th>
 </tr>
     <?php while($row=mysqli_fetch_assoc($resultat)):?>
         <tr>
@@ -57,6 +61,13 @@ $resultat = mysqli_query($bdd,$querry);
         }
                 ?>
                 </td>
+            <form action="emprunter_objet.php" method="POST">
+                <td><input type="number" name="jours" min="1" max="30" value="1" required></td>
+                <td>
+                    <input type="hidden" name="id_objet" value="<?=$row['id_objet']?>">
+                    <button type="submit">Emprunter</button>
+                </td>
+            </form>
         </tr>
         <?php endwhile ?>
 </table>
